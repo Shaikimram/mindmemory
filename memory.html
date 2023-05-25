@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memory Mind</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('suc.jpeg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="file"], input[type="datetime-local"], button {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+
+    video {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Memory Mind</h1>
+
+  <div class="container">
+    <form id="memoryForm">
+      <h2>Add a Memory</h2>
+      <input type="text" id="memoryTitle" placeholder="Memory Title" required>
+      <input type="file" id="memoryFile" accept="image/*, video/*" required>
+      <input type="datetime-local" id="memoryDateTime" required>
+      <button type="submit">Save Memory</button>
+    </form>
+
+    <div id="memoryList">
+      <h2>My Memories</h2>
+      <ul id="memoryItems"></ul>
+    </div>
+  </div>
+
+  <script>
+    // Store memories in an array for simplicity (replace with database integration in the actual project)
+    let memories = [];
+
+    // DOM elements
+    const memoryForm = document.getElementById('memoryForm');
+    const memoryTitleInput = document.getElementById('memoryTitle');
+    const memoryFileInput = document.getElementById('memoryFile');
+    const memoryDateTimeInput = document.getElementById('memoryDateTime');
+    const memoryItemsList = document.getElementById('memoryItems');
+
+    // Event listener for form submission
+    memoryForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      // Create a new memory object
+      const newMemory = {
+        title: memoryTitleInput.value,
+        file: memoryFileInput.files[0],
+        dateTime: memoryDateTimeInput.value
+      };
+
+      // Add the memory to the array
+      memories.push(newMemory);
+
+      // Display the memory in the list
+      displayMemory(newMemory);
+
+      // Clear the form inputs
+      memoryForm.reset();
+    });
+
+    // Function to display a memory in the list
+    function displayMemory(memory) {
+      const listItem = document.createElement('li');
+      const memoryDateTime = new Date(memory.dateTime).toLocaleString();
+
+      listItem.innerHTML = `
+        <h3>${memory.title}</h3>
+        <p>Date and Time: ${memoryDateTime}</p>
+        <video src="${URL.createObjectURL(memory.file)}" controls></video>
+      `;
+
+      memoryItemsList.appendChild(listItem);
+    }
+
+        // Display existing memories on page load (replace with actual retrieval from database)
+        memories.forEach((memory) => {
+      displayMemory(memory);
+    });
+  </script>
+</body>
+</html>
